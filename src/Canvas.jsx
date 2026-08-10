@@ -8,11 +8,23 @@ const Canvas = () => {
   const [redo_lines, setRedoLines] = React.useState([]);
   const isDrawing = React.useRef(false);
 
+  function printLines()
+  {
+    console.log(lines[lines.length-1])
+    // for (let index = 0; index < lines.length; index++) {
+    //   console.log(lines[index].points)
+      
+    // }
+  }
+
+
   const handleMouseDown = (e) => {
     isDrawing.current = true;
     const pos = e.target.getStage().getPointerPosition();
     setRedoLines([])
+    // points store all points as [x1,y1,.....,xn,yn]
     setLines([...lines, { tool, points: [pos.x, pos.y] }]);
+    printLines()
   };
   const handleUndo = (e) =>
   {
@@ -57,9 +69,10 @@ const Canvas = () => {
     isDrawing.current = false;
   };
 
-
+  const imageSize = 3.5;
   return (
     <div>
+      <Text text="Just start drawing" x={5} y={30} />
       <select
         value={tool}
         onChange={(e) => {
@@ -73,8 +86,8 @@ const Canvas = () => {
       <button onClick={handleRedo}>Redo</button>
 
       <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width={109*imageSize}
+        height={109*imageSize}
         onMouseDown={handleMouseDown}
         onMousemove={handleMouseMove}
         onMouseup={handleMouseUp}
@@ -83,8 +96,7 @@ const Canvas = () => {
         onTouchEnd={handleMouseUp}
       >
         <Layer>
-          <Text text="Just start drawing" x={5} y={30} />
-          <Image image={nativeImage} scaleX={5} scaleY={5}/>
+          <Image image={nativeImage} scaleX={imageSize} scaleY={imageSize}/>
           {lines.map((line, i) => (
             <Line
               key={i}
