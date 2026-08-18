@@ -1,19 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { KanjiWriter,KanjiVGParser } from "kanji-recognizer";
 
-export default function Canvas() {
+export default function Canvas(kanji) {
   const writerRef = useRef(null);
   let timesWritten = 0;
   const maxTimesSpecified = 2;
+  let attempts = [];
   useEffect(() => {
     let cancelled = false;
 
     async function init() {
-      console.log("Fetching KanjiVG data for:", '中');
 
       KanjiVGParser.baseUrl = "assets/kanji/"
 
-      const kanjiData = await KanjiVGParser.fetchData('中');
+      const kanjiData = await KanjiVGParser.fetchData(kanji);
 
       console.log("Raw kanjiData:", kanjiData);
       console.log("Type:", typeof kanjiData);
@@ -43,10 +43,8 @@ export default function Canvas() {
         console.log(timesWritten)
         if(timesWritten <maxTimesSpecified)
         {
+          attempts.push(writer.userScores)
           writer.clear()
-          //save accuracy
-
-
         }
         else
         {
