@@ -6,14 +6,16 @@ export default function Canvas(kanji) {
   let timesWritten = 0;
   const maxTimesSpecified = 2;
   let attempts = [];
+  console.log(kanji)
   useEffect(() => {
     let cancelled = false;
-
     async function init() {
-
+      if(!Object.hasOwn(kanji,'kanji'))
+        return //throw some error here
+      
       KanjiVGParser.baseUrl = "assets/kanji/"
 
-      const kanjiData = await KanjiVGParser.fetchData(kanji);
+      const kanjiData = await KanjiVGParser.fetchData(kanji['kanji']);
 
       console.log("Raw kanjiData:", kanjiData);
       console.log("Type:", typeof kanjiData);
