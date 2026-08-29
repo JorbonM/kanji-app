@@ -1,0 +1,56 @@
+KanjiReadings
+	unicode foreign
+	reading
+	type [kun,on]
+	primary key unicode reading
+
+KanjiMeanings
+	unicode foreign
+	meaning
+
+Radicals
+	unicode
+	Radical
+
+Users
+	uid primary key
+	username
+	email
+	password
+	streak
+	
+UserLevelsKanjis
+	uid
+	unicode
+	first_seen
+	last_reviewed
+	times_seen
+	Level
+
+UserLevelsWords
+	uid
+	word foreign key
+	first_seen
+	last_reviewed
+	times_seen
+	Level
+Words
+	word_id
+	word
+	pronounciation
+	primary key kanji_unicodes kanji
+
+KanjiWords
+	word_id
+	kanjis
+
+Genki
+	unicode
+	Lesson
+
+ScoresUser
+	uid
+	kanji
+	avg_scores
+	stroke_order_score
+	Date
