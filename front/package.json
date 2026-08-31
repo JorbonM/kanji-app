@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-router/node": "^8.3.0",
     "@react-router/serve": "^8.3.0",
+    "axios": "^1.20.0",
     "isbot": "^5.2.1",
     "kanji-recognizer": "https://github.com/JorbonM/kanji-recognizer-extra/tarball/main",
     "konva": "^10.0.12",

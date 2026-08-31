@@ -1,21 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import { KanjiWriter,KanjiVGParser } from "kanji-recognizer";
+import { useLocation } from "react-router";
 
-export default function Canvas(kanji) {
+
+export default function Canvas() {
+  const location = useLocation();
   const writerRef = useRef(null);
   let timesWritten = 0;
   const maxTimesSpecified = 2;
   let attempts = [];
-  console.log(kanji)
+
   useEffect(() => {
     let cancelled = false;
     async function init() {
-      if(!Object.hasOwn(kanji,'kanji'))
+      console.log("hi");
+      if(!Object.hasOwn(location.state,'kanji'))
         return //throw some error here
       
       KanjiVGParser.baseUrl = "assets/kanji/"
 
-      const kanjiData = await KanjiVGParser.fetchData(kanji['kanji']);
+      const kanjiData = await KanjiVGParser.fetchData(location.state['kanji']);
 
       console.log("Raw kanjiData:", kanjiData);
       console.log("Type:", typeof kanjiData);
@@ -70,7 +74,7 @@ export default function Canvas(kanji) {
         container.innerHTML = "";
       }
     };
-  }, []);
+  }, [location]);
 
   return (
     <div
