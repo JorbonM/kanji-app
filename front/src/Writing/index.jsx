@@ -13,13 +13,12 @@ export default function Canvas() {
   useEffect(() => {
     let cancelled = false;
     async function init() {
-      console.log("hi");
       if(!Object.hasOwn(location.state,'kanji'))
         return //throw some error here
       
-      KanjiVGParser.baseUrl = "assets/kanji/"
+      KanjiVGParser.baseUrl = "../../assets/kanji/"
 
-      const kanjiData = await KanjiVGParser.fetchData(location.state['kanji']);
+      const kanjiData = await KanjiVGParser.fetchData(location.state.kanji);
 
       console.log("Raw kanjiData:", kanjiData);
       console.log("Type:", typeof kanjiData);

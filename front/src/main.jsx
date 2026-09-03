@@ -14,13 +14,16 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<App />} />
 
         <Route path="lessons">
-          <Route path="genki/*" element={<GenkiLesson />}>
-            {/* <Route index path="practice" element={<Canvas/>} /> */}
+          <Route path="genki/" element={<GenkiLesson />}>
+            {/* <Route path="practice" element={<Canvas/>} /> */}
+            {/* <Route path="test" element={<Test/>} /> */}
 
           </Route>
+          <Route path="genki/practice" element={<Canvas/>} />
 
         </Route>
-        {/* <Route path="practice" element={<Canvas/>} /> */}
+
+        {/* <Route path="genki/practice" element={<Canvas/>} /> */}
       </Routes>
     </BrowserRouter>
   </StrictMode>,
