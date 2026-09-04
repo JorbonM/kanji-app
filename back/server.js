@@ -8,7 +8,7 @@ const login_dets = require('./user.json');
 
 const db = pgp(`postgres://${login_dets.username}:${login_dets.password}@localhost:5432/KanjiAppDB`); //insert actual db
 const corsOptions = {
-  origin: ["http://localhost:5173"], // front end server
+  // origin: ["http://localhost:5173"], // front end server
 };
 
 app.use(cors(corsOptions));
@@ -33,7 +33,15 @@ app.listen(8080, () => {
 
 app.post('/genki', async(req,res) =>
 {
-  var results = await db.any('SELECT * from genki')
+  var results = await db.any('SELECT * from genki');
+  var dict = {};
+  for (let index = 0; index < results.length; index++) {
+    const element = results[index];
+    if(!(element['lesson'] in dict))
+      dict[element['lesson']] = [];
+    dict[element['lesson']].push(element.unicode);
+  }
+
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({"results":results}));
+  res.send(JSON.stringify({"results":dict}));
 });

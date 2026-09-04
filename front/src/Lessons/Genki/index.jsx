@@ -1,38 +1,69 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, } from 'react'
 import { NavLink } from "react-router";
 import axios from "axios";
 import Canvas from '../../Writing';
 import { Route, Routes, Outlet } from 'react-router'
 import { useLocation } from 'react-router';
 
+
+function AddKanjis(response)
+{
+  return <>
+     {
+      Object.keys(response).map((key=>(
+        <>
+          <h2>{key}</h2>
+          {response[key].map(kanji=>
+            (
+              <>
+              <NavLink
+                to="practice"
+                state={{ kanji: String.fromCodePoint('0x'+kanji) }}
+              >
+                {String.fromCharCode('0x'+kanji)}
+              </NavLink>
+
+              <br/>
+              </>
+            )
+          )
+
+          }
+        </>
+      )))
+    }
+  </>
+}
+
 function GenkiLesson() {
-  // const location = useLocation();
-  // const [count, setCount] = useState(0);
+  const location = useLocation();
+  const [resp, setResp] = useState([]);
 
-  //   const fetchAPI = async () => {
-  //     const response = await axios.post("http://localhost:8080/genki");
-  //     console.log(response)
-  // };
-  // useEffect( () =>
-  // {
-  //   fetchAPI();
-  //   console.log("genki")
+    const fetchAPI = async () => {
+      await axios.post("http://localhost:8080/genki").then(response =>
+      {
+        setResp(response.data.results);
+      }
+      );
+  };
+  useEffect( () =>
+  {
+    fetchAPI(); 
+  },[location])
 
-  // },[location])
+  
 
   return (
     <>
       <h1>Genki Lesson</h1>
-      {/* <Routes>
-          <Route path="practice" element={<Canvas/>} />
 
-      </Routes> */}
-      <NavLink
+      {AddKanjis(resp)}
+      {/* <NavLink
         to="practice"
         state={{ kanji: "花" }}
       >
         Practice
-      </NavLink>
+      </NavLink> */}
 
     </>
   )
