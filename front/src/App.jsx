@@ -1,16 +1,31 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
-// import Canvas from './Canvas'
-import { NavLink } from "react-router";
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
+import GenkiLesson from './Lessons/Genki/index.jsx'
+import Canvas from './Writing/index.jsx'
+import Login from './login/index.jsx'
+import Register from './register/index.jsx'
+import Home from './home'
+import NotFound from './FNF404.jsx'
 
 function App() {
+  const [user, setUser] = useState(null);
   return (
     <>
-    <h1>Hello!</h1>
-    <NavLink to="lessons/genki/">Genki</NavLink>
-      {/* <NavLink to="/practice" state={{ kanji: "花" }}>Practice</NavLink> */}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path='/login' element={<Login onLogin={(username)=>{setUser(username);}}/>}/>
+        <Route path='/register' element={<Register onLogin={(username)=>{setUser(username);}}/>}/>
+        <Route path="lessons" >
+          <Route path="genki/" element={user == null ? (<Navigate to='/' replace />) : <GenkiLesson/>}/>
+          <Route path="genki/practice" element={user == null ? (<Navigate to='/' replace />) :<Canvas/>} />
+
+        </Route>
+        <Route path="*" element={<NotFound />} />
+
+      </Routes>
+    </BrowserRouter>
     </>
   )
 }

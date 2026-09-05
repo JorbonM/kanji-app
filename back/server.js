@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pgp = require('pg-promise')(/* options */);
+const bcrypt = require('bcrypt');
 
 const login_dets = require('./user.json');
 
@@ -29,7 +30,44 @@ app.listen(8080, () => {
     });
   
   });
+app.post('/login', async(req,res)=>
+{
+  console.log(req);
+    var email=req.body.email;
+    var result = await db.oneOrNone('SELECT * from Users where email=$1',[email]);
+    res.setHeader('Content-Type', 'application/json');
 
+    if(result==null)
+    {
+      res.send(JSON.stringify({"results": false}));
+      return
+    }
+    var id = result.uid;
+
+    bcrypt.compare(myPlaintextPassword, result?.password_hash).then(function(result) {
+      if(!result)
+      {
+          res.send(JSON.stringify({"results": false}));
+        return
+      }
+      
+    db.none('UPDATE users SET streak = $1 WHERE uid = $2', [result.streak +1, id])
+      .then(data => {
+          res.send(JSON.stringify({"results": true}));
+      })
+      .catch(error => {
+          console.log('ERROR:', error); // print error;
+          res.send(JSON.stringify({"results": false}));
+      });
+
+    });
+
+});
+
+app.post('/register', async(req,res)=>
+{
+
+});
 
 app.post('/genki', async(req,res) =>
 {
